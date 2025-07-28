@@ -1,0 +1,6 @@
+# skip binary directories
+/target
+
+# skip files containing secrets
+Secrets*.toml
+.shuttle*
