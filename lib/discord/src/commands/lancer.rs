@@ -39,7 +39,7 @@ pub async fn lancer_roll(
 pub async fn lancer_d6(
     ctx: super::Context<'_>,
     #[min_length = 1]
-    #[max_length = 128]
+    #[max_length = 64]
     #[rename = "reason"]
     #[description = "short identifier for the reason of this roll"]
     reason: Option<String>,
