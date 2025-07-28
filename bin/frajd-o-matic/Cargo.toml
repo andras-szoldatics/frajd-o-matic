@@ -1,0 +1,13 @@
+[package]
+name = "frajd-o-matic"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.98"
+poise = "0.6.1"
+shuttle-runtime = "0.56.0"
+
+dice = { workspace = true }
+discord = { workspace = true }
+shuttle-serenity = "0.56.0"
