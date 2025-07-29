@@ -21,15 +21,25 @@ pub async fn lancer_roll(
         format!("d20{modifier:+}{sixes:+}d6:H")
     };
 
-    // this formula can always be parsed
-    let formula = dice::Formula::try_from(&dice_formula).unwrap_or_default();
+    // this formula should always be parsable, but just in case
+    let r = dice::Formula::try_from(&dice_formula);
+    match r {
+        Ok(formula) => {
+            // generate result for formula
+            let result = formula.generate_result();
 
-    // generate result for formula
-    let result = formula.generate_result();
+            // generate message body and reply
+            let msg = crate::message::result_message(reason, &result);
+            ctx.reply(msg).await?;
+        }
+        Err(e) => {
+            // generate message body and reply object for ephemeral message
+            let msg = crate::message::dice_error_message(&e);
+            let reply = poise::CreateReply::default().content(msg).ephemeral(true);
 
-    // generate message body and reply
-    let msg = crate::message::result_message(reason, &result);
-    ctx.reply(msg).await?;
+            ctx.send(reply).await?;
+        }
+    }
 
     Ok(())
 }
@@ -44,15 +54,28 @@ pub async fn lancer_d6(
     #[description = "short identifier for the reason of this roll"]
     reason: Option<String>,
 ) -> Result<(), super::Error> {
-    // this formula can always be parsed
-    let formula = dice::Formula::try_from("d6").unwrap_or_default();
+    // assemble a string formula by hand
+    let dice_formula = "D6";
 
-    // generate result for formula
-    let result = formula.generate_result();
+    // this formula should always be parsable, but just in case
+    let r = dice::Formula::try_from(dice_formula);
+    match r {
+        Ok(formula) => {
+            // generate result for formula
+            let result = formula.generate_result();
 
-    // generate message body and reply
-    let msg = crate::message::result_message(reason, &result);
-    ctx.reply(msg).await?;
+            // generate message body and reply
+            let msg = crate::message::result_message(reason, &result);
+            ctx.reply(msg).await?;
+        }
+        Err(e) => {
+            // generate message body and reply object for ephemeral message
+            let msg = crate::message::dice_error_message(&e);
+            let reply = poise::CreateReply::default().content(msg).ephemeral(true);
+
+            ctx.send(reply).await?;
+        }
+    }
 
     Ok(())
 }

@@ -113,6 +113,7 @@ impl Entry {
 }
 
 impl Formula {
+    #[must_use]
     pub fn generate_result(&self) -> Result {
         let mut values = vec![];
 
@@ -124,7 +125,7 @@ impl Formula {
 
         // setup for iteration
         let mut operator = Category::OpPlus;
-        let mut final_value = 0;
+        let mut final_value: i64 = 0;
         let mut grouped_text = String::new();
         let mut partial_text = String::new();
         let mut formula_text = String::new();
@@ -136,9 +137,9 @@ impl Formula {
 
             // calculate final result
             match &entry.category {
-                Category::Number(_) | Category::Dice(_) => match operator {
-                    Category::OpPlus => final_value += f_value,
-                    Category::OpMinus => final_value -= f_value,
+                Category::Dice(_) | Category::Number(_) => match operator {
+                    Category::OpPlus => final_value = final_value.saturating_add(f_value),
+                    Category::OpMinus => final_value = final_value.saturating_sub(f_value),
                     _ => {}
                 },
                 Category::OpPlus => operator = Category::OpPlus,
@@ -164,9 +165,8 @@ impl Formula {
                 partial_text.push(' ');
             }
             match &entry.category {
-                Category::Number(_) => partial_text.push_str(&f_value.to_string()),
                 Category::Dice(_) => {
-                    // inactive values must be stricken out with '~'
+                    // inactive values must be stricken out with '~~'
                     let list = s_values
                         .iter()
                         .map(|(value, active)| {
@@ -182,6 +182,7 @@ impl Formula {
 
                     partial_text.push_str(&block);
                 }
+                Category::Number(_) => partial_text.push_str(&f_value.to_string()),
                 _ => partial_text.push_str(&entry.original),
             }
 

@@ -33,7 +33,7 @@ pub async fn help(ctx: super::Context<'_>) -> Result<(), super::Error> {
 pub async fn roll(
     ctx: super::Context<'_>,
     #[min_length = 1]
-    #[max_length = 128]
+    #[max_length = 64]
     #[rename = "dice-formula"]
     #[description = "dice and fix values to evaluate"]
     dice_formula: String,
