@@ -12,7 +12,7 @@ This project also utilizes the shuttle_runtime [[link](https://docs.rs/shuttle-r
 
 - `/fom-help` - list available commands and dice notation help, no parameters
 - `/fom-roll` - roll any dice notation
-  - `dice-formula` (string, required, 1-128 chars): dice and fixed values to evaluate, e.g. `d20+2+2d6:H`
+  - `dice-formula` (string, required, 1-64 chars): dice and fixed values to evaluate, e.g. `d20+2+2d6:H`
   - `reason` (string, optional, 1-64 chars): short identifier for the reason, e.g. `attack the goblin`
 - `/fom-coin` - flip a two-sided coin, no parameters
 
@@ -42,8 +42,8 @@ flexible dice notation for tabletop-style rolling, combine numbers, dice, and ar
 
 - numbers: any positive integer (e.g. `2`, `10`, `100`)
 - addition and subtraction: `+` and `-` to add or subtract numbers or dice results (e.g. `d20 + 2`, `2d6 - 1`)
-- dice:
-  - standard dice: `d20`, `2d6`, `4d100` (number of dice and sides)
+- dice, number of dice should be at most 100, number of sides at most 1000:
+  - standard dice: `d20`, `2d6`, `4D100` (number of dice and sides)
   - fate dice: `4dF` (four FATE dice, each -1, 0, or +1)
   - omit number before `d` to roll one die (e.g. `d6` = `1d6`)
 

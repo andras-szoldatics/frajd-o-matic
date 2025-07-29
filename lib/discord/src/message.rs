@@ -15,7 +15,7 @@ pub fn result_message(reason: Option<String>, result: &dice::Result) -> String {
 
     // assemble lines as a discord message
     if formula_line.len() <= 128 {
-        format!("{}\n{}", result_line, formula_line)
+        format!("{result_line}\n{formula_line}")
     } else {
         format!("{}\n-# = ... = {}", result_line, result.formula_text)
     }

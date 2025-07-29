@@ -135,15 +135,65 @@ impl crate::Formula {
         let mut entries = vec![];
 
         // setup for iteration
-        let mut was_operator = None;
+        let mut was_operator: Option<bool> = None;
         let mut current_ix = 0;
 
         // iterate over original entries
         for entry in self.entries {
             match entry.category {
-                crate::Category::Space => {
-                    // shift ix
+                crate::Category::Dice(ref dice) => {
+                    // disassemble dice
+                    let count = dice.count;
+                    let faces = match dice.die {
+                        crate::Die::Number(faces) => faces,
+                        crate::Die::Fate => 3,
+                    };
+
+                    // check if previous entry was an operator
+                    if let Some(was_op) = was_operator {
+                        if !was_op {
+                            return Err(crate::FormulaError {
+                                original: self.original,
+                                issue: crate::Issue::InvalidDice,
+                                issue_ix: Some(current_ix),
+                            });
+                        }
+                    }
+
+                    // check dice against constraints
+                    if count > 100 || faces > 1000 {
+                        return Err(crate::FormulaError {
+                            original: self.original,
+                            issue: crate::Issue::InvalidDice,
+                            issue_ix: Some(current_ix),
+                        });
+                    }
+
+                    // shift ix & flag
+                    was_operator = Some(false);
                     current_ix += entry.original.len();
+
+                    // add current dice to entries
+                    entries.push(entry);
+                }
+                crate::Category::Number(_) => {
+                    // check if previous entry was an operator
+                    if let Some(was_op) = was_operator {
+                        if !was_op {
+                            return Err(crate::FormulaError {
+                                original: self.original,
+                                issue: crate::Issue::InvalidNumber,
+                                issue_ix: Some(current_ix),
+                            });
+                        }
+                    }
+
+                    // shift ix & flag
+                    current_ix += entry.original.len();
+                    was_operator = Some(false);
+
+                    // add number to entries
+                    entries.push(entry);
                 }
                 crate::Category::OpPlus | crate::Category::OpMinus => {
                     // check if previous entry was an operator
@@ -165,29 +215,8 @@ impl crate::Formula {
                     entries.push(entry);
                 }
                 _ => {
-                    // check if previous entry was an operator
-                    if let Some(was_op) = was_operator {
-                        let issue = match entry.category {
-                            crate::Category::Dice(_) => crate::Issue::InvalidDice,
-                            crate::Category::Number(_) => crate::Issue::InvalidNumber,
-                            _ => crate::Issue::Undefined,
-                        };
-
-                        if !was_op {
-                            return Err(crate::FormulaError {
-                                original: self.original,
-                                issue,
-                                issue_ix: Some(current_ix),
-                            });
-                        }
-                    }
-
-                    // shift ix & flag
-                    was_operator = Some(false);
+                    // shift ix
                     current_ix += entry.original.len();
-
-                    // add current entry to entries
-                    entries.push(entry);
                 }
             }
         }

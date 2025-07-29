@@ -14,15 +14,25 @@ pub async fn fate_roll(
     // assemble a string formula by hand
     let dice_formula = format!("4dF{modifier:+}");
 
-    // this formula can always be parsed
-    let formula = dice::Formula::try_from(&dice_formula).unwrap_or_default();
+    // this formula should always be parsed, but just in case
+    let r = dice::Formula::try_from(&dice_formula);
+    match r {
+        Ok(formula) => {
+            // generate result for formula
+            let result = formula.generate_result();
 
-    // generate result for formula
-    let result = formula.generate_result();
+            // generate message body and reply
+            let msg = crate::message::result_message(reason, &result);
+            ctx.reply(msg).await?;
+        }
+        Err(e) => {
+            // generate message body and reply object for ephemeral message
+            let msg = crate::message::dice_error_message(&e);
+            let reply = poise::CreateReply::default().content(msg).ephemeral(true);
 
-    // generate message body and reply
-    let msg = crate::message::result_message(reason, &result);
-    ctx.reply(msg).await?;
+            ctx.send(reply).await?;
+        }
+    }
 
     Ok(())
 }
