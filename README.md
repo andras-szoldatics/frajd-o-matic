@@ -12,14 +12,17 @@ This project also utilizes the shuttle_runtime [[link](https://docs.rs/shuttle-r
 
 - `/fom-help` - list available commands and dice notation help, no parameters
 - `/fom-roll` - roll any dice notation
-  - `dice-formula` (string, required, 1-64 chars): dice and fixed values to evaluate, e.g. `d20+2+2d6:H`
-  - `reason` (string, optional, 1-64 chars): short identifier for the reason, e.g. `attack the goblin`
-- `/fom-coin` - flip a two-sided coin, no parameters
+  - `dice-formula` (string, required, 1-48 chars): dice and fixed values to evaluate, e.g. `d20+2+2d6:H`
+  - `number-of-rolls` (integer, optional, 1-12): number of total rolls to perform, defaults to 1
+  - `reason` (string, optional, 1-48 chars): short identifier for the reason, e.g. `attack the goblin`
+- `/fom-coin` - flip a two-sided coin
+  - `number-of-flips` (integer, optional, 1-12): number of total coin flips to perform, defaults to 1
 
 ### fate commands
 
 - `/fate-roll` - roll four FATE dice with a modifier
   - `modifier` (integer, required): fixed modifier from approach, skill, or other stat
+  - `number-of-rolls` (integer, optional, 1-12): number of total rolls to perform, defaults to 1
   - `reason` (string, optional, 1-64 chars): short identifier for the reason, e.g. `create advantage`
 
 ### lancer commands
@@ -30,6 +33,7 @@ This project also utilizes the shuttle_runtime [[link](https://docs.rs/shuttle-r
     - `0`: normal roll
     - positive: number of accuracy dice (e.g. `+2` for 2 accuracy)
     - negative: number of difficulty dice (e.g. `-1` for 1 difficulty)
+  - `number-of-rolls` (integer, optional, 1-12): number of total rolls to perform, defaults to 1
   - `reason` (string, optional, 1-64 chars): short identifier for the reason, e.g. `attack the mech`
 - `/lancer-d6` - single d6 die for chance
   - `reason` (string, optional, 1-64 chars): short identifier for the reason, e.g. `NPC recharge`
@@ -57,11 +61,11 @@ flexible dice notation for tabletop-style rolling, combine numbers, dice, and ar
 
 ### examples
 
-- `d20 + 2` — d20 plus 2
-- `2d6:H1 - 2d6:L1` — two d6, keep highest one, subtract lowest one from another roll
-- `d20+2+2d6:H` — d20, plus 2, plus highest of two d6
-- `4dF+3` — four FATE dice plus 3
-- `2d100:L` — two d100, keep lowest
+- `d20 + 2` - d20 plus 2
+- `2d6:H1 - 2d6:L1` - two d6, keep highest one, subtract lowest one from another roll
+- `d20+2+2d6:H` - d20, plus 2, plus highest of two d6
+- `4dF+3` - four FATE dice plus 3
+- `2d100:L` - two d100, keep lowest
 
 ### error handling
 

@@ -8,6 +8,11 @@ pub async fn lancer_roll(
     #[rename = "accuracy-or-difficulty"]
     #[description = "the degree of total accuracy or difficulty [0: normal, +N: accuracy, -N: difficulty]"]
     sixes: i64,
+    #[min = 1]
+    #[max = 12]
+    #[rename = "number-of-rolls"]
+    #[description = "number of total rolls to perform, defaults to 1"]
+    number_of_rolls: Option<u64>,
     #[min_length = 1]
     #[max_length = 64]
     #[rename = "reason"]
@@ -25,11 +30,14 @@ pub async fn lancer_roll(
     let r = dice::Formula::try_from(&dice_formula);
     match r {
         Ok(formula) => {
-            // generate result for formula
-            let result = formula.generate_result();
+            // initialize generator closure
+            let generator = || {
+                let result = formula.generate_result();
+                crate::message::result_message(reason.as_ref(), &result)
+            };
 
-            // generate message body and reply
-            let msg = crate::message::result_message(reason, &result);
+            // generate repeated results as reply
+            let msg = super::handle_repeats(number_of_rolls, generator);
             ctx.reply(msg).await?;
         }
         Err(e) => {
@@ -61,11 +69,14 @@ pub async fn lancer_d6(
     let r = dice::Formula::try_from(dice_formula);
     match r {
         Ok(formula) => {
-            // generate result for formula
-            let result = formula.generate_result();
+            // initialize generator closure
+            let generator = || {
+                let result = formula.generate_result();
+                crate::message::result_message(reason.as_ref(), &result)
+            };
 
-            // generate message body and reply
-            let msg = crate::message::result_message(reason, &result);
+            // generate repeated results as reply
+            let msg = super::handle_repeats(Some(1), generator);
             ctx.reply(msg).await?;
         }
         Err(e) => {
