@@ -30,14 +30,16 @@ pub async fn lancer_roll(
     let r = dice::Formula::try_from(&dice_formula);
     match r {
         Ok(formula) => {
+            let repeats = number_of_rolls.unwrap_or(1);
+
             // initialize generator closure
             let generator = || {
                 let result = formula.generate_result();
-                crate::message::result_message(reason.as_ref(), &result)
+                crate::message::result_message(result, reason.as_ref(), repeats)
             };
 
             // generate repeated results as reply
-            let msg = super::handle_repeats(number_of_rolls, generator);
+            let msg = super::handle_repeats(generator, repeats);
             ctx.reply(msg).await?;
         }
         Err(e) => {
@@ -72,11 +74,11 @@ pub async fn lancer_d6(
             // initialize generator closure
             let generator = || {
                 let result = formula.generate_result();
-                crate::message::result_message(reason.as_ref(), &result)
+                crate::message::result_message(result, reason.as_ref(), 1)
             };
 
             // generate repeated results as reply
-            let msg = super::handle_repeats(Some(1), generator);
+            let msg = super::handle_repeats(generator, 1);
             ctx.reply(msg).await?;
         }
         Err(e) => {

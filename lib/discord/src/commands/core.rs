@@ -52,16 +52,16 @@ pub async fn roll(
     let r = dice::Formula::try_from(&dice_formula);
     match r {
         Ok(formula) => {
+            let repeats = number_of_rolls.unwrap_or(1);
+
             // initialize generator closure
             let generator = || {
                 let result = formula.generate_result();
-                crate::message::result_message(reason.as_ref(), &result)
+                crate::message::result_message(result, reason.as_ref(), repeats)
             };
 
             // generate repeated results as reply
-            let msg = super::handle_repeats(number_of_rolls, generator);
-            println!("original message:\n{msg}");
-
+            let msg = super::handle_repeats(generator, repeats);
             ctx.reply(msg).await?;
         }
         Err(e) => {
@@ -93,7 +93,8 @@ pub async fn coin_flip(
     };
 
     // generate repeated results as reply
-    let msg = super::handle_repeats(number_of_flips, generator);
+    let repeats = number_of_flips.unwrap_or(1);
+    let msg = super::handle_repeats(generator, repeats);
     ctx.reply(msg).await?;
 
     Ok(())

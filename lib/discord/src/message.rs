@@ -1,4 +1,10 @@
-pub fn result_message(reason: Option<&String>, result: &dice::Result) -> (String, String) {
+const FORMULA_LINE_LIMIT: u64 = 64 * 12;
+
+pub fn result_message(
+    result: dice::Result,
+    reason: Option<&String>,
+    repeats: u64,
+) -> (String, String) {
     let result_line = match reason {
         Some(s) => format!("{s} = **{}**", result.final_value),
         None => format!("= **{}**", result.final_value),
@@ -13,8 +19,11 @@ pub fn result_message(reason: Option<&String>, result: &dice::Result) -> (String
         )
     };
 
+    // calculcate line limit
+    let limit = FORMULA_LINE_LIMIT / repeats;
+
     // assemble lines as a discord message
-    if formula_line.len() <= crate::FORMULA_LINE_LIMIT {
+    if formula_line.len() as u64 <= limit {
         (result_line, formula_line)
     } else {
         (result_line, format!("= ... = {}", result.formula_text))

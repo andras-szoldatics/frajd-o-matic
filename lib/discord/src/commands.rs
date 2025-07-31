@@ -6,23 +6,22 @@ pub struct Data {}
 type Error = Box<dyn std::error::Error + Send + Sync>;
 type Context<'a> = poise::Context<'a, Data, Error>;
 
-pub fn handle_repeats<F>(repeats: Option<u64>, f: F) -> String
+pub fn handle_repeats<F>(f: F, repeats: u64) -> String
 where
     F: Fn() -> (String, String),
 {
     // setup for iteration
-    let number_of_sets = repeats.unwrap_or(1);
-    let mut messages = match number_of_sets {
+    let mut messages = match repeats {
         1 => vec![],
-        _ => vec![format!("total # of rolls: {number_of_sets}")],
+        _ => vec![format!("total # of rolls: {repeats}")],
     };
 
-    for _ in 0..number_of_sets {
+    for _ in 0..repeats {
         // generate a message
         let (r, f) = f();
 
         // generate block for result line
-        let block = match number_of_sets {
+        let block = match repeats {
             1 => r.to_string(),
             _ => format!("1. {r}"),
         };
@@ -30,7 +29,7 @@ where
 
         // generate block for formula line
         if !f.is_empty() {
-            let block = match number_of_sets {
+            let block = match repeats {
                 1 => format!("-# {f}"),
                 _ => format!("  -# {f}"),
             };
