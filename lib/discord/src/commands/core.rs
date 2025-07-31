@@ -33,12 +33,17 @@ pub async fn help(ctx: super::Context<'_>) -> Result<(), super::Error> {
 pub async fn roll(
     ctx: super::Context<'_>,
     #[min_length = 1]
-    #[max_length = 64]
+    #[max_length = 48]
     #[rename = "dice-formula"]
     #[description = "dice and fix values to evaluate"]
     dice_formula: String,
+    #[min = 1]
+    #[max = 12]
+    #[rename = "number-of-rolls"]
+    #[description = "number of total rolls to perform, defaults to 1"]
+    number_of_rolls: Option<u64>,
     #[min_length = 1]
-    #[max_length = 64]
+    #[max_length = 48]
     #[rename = "reason"]
     #[description = "short identifier for the reason of this roll"]
     reason: Option<String>,
@@ -47,11 +52,16 @@ pub async fn roll(
     let r = dice::Formula::try_from(&dice_formula);
     match r {
         Ok(formula) => {
-            // generate result for formula
-            let result = formula.generate_result();
+            // initialize generator closure
+            let generator = || {
+                let result = formula.generate_result();
+                crate::message::result_message(reason.as_ref(), &result)
+            };
 
-            // generate message body and reply
-            let msg = crate::message::result_message(reason, &result);
+            // generate repeated results as reply
+            let msg = super::handle_repeats(number_of_rolls, generator);
+            println!("original message:\n{msg}");
+
             ctx.reply(msg).await?;
         }
         Err(e) => {
@@ -68,12 +78,22 @@ pub async fn roll(
 
 /// command to flip a two-sided coin
 #[poise::command(slash_command, rename = "fom-coin", category = "core")]
-pub async fn coin_flip(ctx: super::Context<'_>) -> Result<(), super::Error> {
-    // generate result
-    let heads = rand::rng().random();
+pub async fn coin_flip(
+    ctx: super::Context<'_>,
+    #[min = 1]
+    #[max = 12]
+    #[rename = "number-of-flips"]
+    #[description = "number of total coin flips to perform, defaults to 1"]
+    number_of_flips: Option<u64>,
+) -> Result<(), super::Error> {
+    // initialize generator closure
+    let generator = || {
+        let heads = rand::rng().random::<bool>();
+        crate::message::coin_flip_message(heads)
+    };
 
-    // generate message body and reply
-    let msg = crate::message::coin_flip_message(heads);
+    // generate repeated results as reply
+    let msg = super::handle_repeats(number_of_flips, generator);
     ctx.reply(msg).await?;
 
     Ok(())
