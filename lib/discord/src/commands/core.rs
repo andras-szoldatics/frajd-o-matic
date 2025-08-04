@@ -1,36 +1,31 @@
-use poise::samples::HelpConfiguration;
 use rand::Rng;
 
-/// a hopefully helpful list of commands
-#[poise::command(slash_command, rename = "fom-help", category = "core")]
-pub async fn help(ctx: super::Context<'_>) -> Result<(), super::Error> {
-    let extra_lines = [
-        "supported arithmetic entries:",
-        "numbers, addition, substraction",
-        "",
-        "supported dice notation:",
-        "d20 2d6 4dF 4d6:H3 2d100:L",
-        "",
-        "example rolls for /fom-roll:",
-        "2d6:H1 - 2d6:L1",
-        "d20+2+2d6:H",
-    ]
-    .join("\n");
-    let extra_text_at_bottom = &extra_lines.as_str();
-
-    // generate the list from internal helper
-    let config = HelpConfiguration {
-        extra_text_at_bottom,
-        ..Default::default()
+/// command to flip a two-sided coin
+#[poise::command(slash_command, rename = "coins", category = "core")]
+pub async fn coin_flip(
+    ctx: super::Context<'_>,
+    #[min = 1]
+    #[max = 12]
+    #[rename = "number-of-flips"]
+    #[description = "number of total coin flips to perform, defaults to 1"]
+    number_of_flips: Option<u64>,
+) -> Result<(), super::Error> {
+    // initialize generator closure
+    let generator = || {
+        let heads = rand::rng().random::<bool>();
+        crate::message::coin_flip_message(heads)
     };
-    poise::builtins::help(ctx, None, config).await?;
+
+    // generate repeated results as reply
+    let repeats = number_of_flips.unwrap_or(1);
+    let msg = super::handle_repeats(generator, repeats);
+    ctx.reply(msg).await?;
 
     Ok(())
 }
-
 /// command to roll some dice
-#[poise::command(slash_command, rename = "fom-roll", category = "core")]
-pub async fn roll(
+#[poise::command(slash_command, rename = "dice", category = "core")]
+pub async fn dice_roll(
     ctx: super::Context<'_>,
     #[min_length = 1]
     #[max_length = 48]
@@ -72,30 +67,6 @@ pub async fn roll(
             ctx.send(reply).await?;
         }
     }
-
-    Ok(())
-}
-
-/// command to flip a two-sided coin
-#[poise::command(slash_command, rename = "fom-coin", category = "core")]
-pub async fn coin_flip(
-    ctx: super::Context<'_>,
-    #[min = 1]
-    #[max = 12]
-    #[rename = "number-of-flips"]
-    #[description = "number of total coin flips to perform, defaults to 1"]
-    number_of_flips: Option<u64>,
-) -> Result<(), super::Error> {
-    // initialize generator closure
-    let generator = || {
-        let heads = rand::rng().random::<bool>();
-        crate::message::coin_flip_message(heads)
-    };
-
-    // generate repeated results as reply
-    let repeats = number_of_flips.unwrap_or(1);
-    let msg = super::handle_repeats(generator, repeats);
-    ctx.reply(msg).await?;
 
     Ok(())
 }

@@ -14,14 +14,16 @@ async fn main(#[shuttle_runtime::Secrets] secret_store: SecretStore) -> ShuttleS
         .options(poise::FrameworkOptions {
             commands: vec![
                 // core commands
-                discord::commands::core::help(),
-                discord::commands::core::roll(),
                 discord::commands::core::coin_flip(),
+                discord::commands::core::dice_roll(),
                 // fate commands
                 discord::commands::fate::fate_roll(),
                 // lancer commands
                 discord::commands::lancer::lancer_roll(),
                 discord::commands::lancer::lancer_d6(),
+                // help commands
+                discord::commands::help::commands(),
+                discord::commands::help::dice(),
             ],
             ..Default::default()
         })

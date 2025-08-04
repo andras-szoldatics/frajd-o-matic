@@ -1,5 +1,6 @@
 pub mod core;
 pub mod fate;
+pub mod help;
 pub mod lancer;
 
 pub struct Data {}
