@@ -1,4 +1,4 @@
-/// command to roll four FATE dice with a modifier
+/// shortcut to roll four FATE dice with a modifier
 #[poise::command(slash_command, rename = "fate-roll", category = "fate")]
 pub async fn fate_roll(
     ctx: super::Context<'_>,

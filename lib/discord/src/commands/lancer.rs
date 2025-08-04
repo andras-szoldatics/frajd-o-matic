@@ -1,4 +1,4 @@
-/// command to roll a standard Lancer attack / check / save
+/// shortcut to roll a standard Lancer attack / check / save
 #[poise::command(slash_command, rename = "lancer-roll", category = "lancer")]
 pub async fn lancer_roll(
     ctx: super::Context<'_>,
@@ -54,7 +54,7 @@ pub async fn lancer_roll(
     Ok(())
 }
 
-/// command to roll a single d6 die for chance
+/// shortcut to roll a single d6 die for chance / recharge
 #[poise::command(slash_command, rename = "lancer-d6", category = "lancer")]
 pub async fn lancer_d6(
     ctx: super::Context<'_>,
