@@ -1,8 +1,8 @@
 use rand::Rng;
 
 /// command to flip a two-sided coin
-#[poise::command(slash_command, rename = "coins", category = "core")]
-pub async fn coin_flip(
+#[poise::command(slash_command, rename = "flip-coin", category = "core")]
+pub async fn flip_coin(
     ctx: super::Context<'_>,
     #[min = 1]
     #[max = 12]
@@ -24,8 +24,8 @@ pub async fn coin_flip(
     Ok(())
 }
 /// command to roll some dice
-#[poise::command(slash_command, rename = "dice", category = "core")]
-pub async fn dice_roll(
+#[poise::command(slash_command, rename = "roll-dice", category = "core")]
+pub async fn roll_dice(
     ctx: super::Context<'_>,
     #[min_length = 1]
     #[max_length = 48]
