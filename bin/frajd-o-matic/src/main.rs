@@ -14,8 +14,8 @@ async fn main(#[shuttle_runtime::Secrets] secret_store: SecretStore) -> ShuttleS
         .options(poise::FrameworkOptions {
             commands: vec![
                 // core commands
-                discord::commands::core::coin_flip(),
-                discord::commands::core::dice_roll(),
+                discord::commands::core::flip_coin(),
+                discord::commands::core::roll_dice(),
                 // fate commands
                 discord::commands::fate::fate_roll(),
                 // lancer commands

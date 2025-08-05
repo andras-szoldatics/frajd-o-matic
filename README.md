@@ -10,9 +10,9 @@ This project also utilizes the shuttle_runtime [[link](https://docs.rs/shuttle-r
 
 ### core commands
 
-- `/coins` — command to flip a two-sided coin
+- `/flip-coin` — command to flip a two-sided coin
   - `number-of-flips` (integer, optional, 1-12): number of total coin flips to perform, defaults to 1
-- `/dice` — command to roll some dice
+- `/roll-dice` — command to roll some dice
   - `dice-formula` (string, required, 1-48 chars): dice and fixed values to evaluate, e.g. `d20+2+2d6:H`
   - `number-of-rolls` (integer, optional, 1-12): number of total rolls to perform, defaults to 1
   - `reason` (string, optional, 1-48 chars): short identifier for the reason, e.g. `attack the goblin`
