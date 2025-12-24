@@ -1,14 +1,15 @@
-use anyhow::Context as _;
 use poise::serenity_prelude::{ClientBuilder, GatewayIntents};
-use shuttle_runtime::SecretStore;
-use shuttle_serenity::ShuttleSerenity;
+use tracing_subscriber::EnvFilter;
 
-#[shuttle_runtime::main]
-async fn main(#[shuttle_runtime::Secrets] secret_store: SecretStore) -> ShuttleSerenity {
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    // enable logging for serenity
+    tracing_subscriber::fmt()
+        .with_env_filter(EnvFilter::new("serenity=info"))
+        .init();
+
     // Get the discord token set in `Secrets.toml`
-    let discord_token = secret_store
-        .get("DISCORD_TOKEN")
-        .context("'DISCORD_TOKEN' was not found")?;
+    let discord_token = include_str!("./secret.key").trim();
 
     let framework = poise::Framework::builder()
         .options(poise::FrameworkOptions {
@@ -35,10 +36,10 @@ async fn main(#[shuttle_runtime::Secrets] secret_store: SecretStore) -> ShuttleS
         })
         .build();
 
-    let client = ClientBuilder::new(discord_token, GatewayIntents::non_privileged())
+    let mut client = ClientBuilder::new(discord_token, GatewayIntents::non_privileged())
         .framework(framework)
-        .await
-        .map_err(shuttle_runtime::CustomError::new)?;
+        .await?;
 
-    Ok(client.into())
+    client.start().await?;
+    Ok(())
 }

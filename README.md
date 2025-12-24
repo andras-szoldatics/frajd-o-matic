@@ -4,8 +4,6 @@ Handmade discord dice bot written in rust.
 
 This project utilizes the poise [[link](https://docs.rs/poise/latest/poise/)] and serenity [[link](https://docs.rs/serenity/latest/serenity/)] frameworks for wrapping the Discord API.
 
-This project also utilizes the shuttle_runtime [[link](https://docs.rs/shuttle-runtime/latest/shuttle_runtime/)] crate and the shuttle platform for deployment.
-
 ## available slash commands
 
 ### core commands
@@ -77,10 +75,10 @@ flexible dice notation for tabletop-style rolling, combine numbers, dice, and ar
 
 ## parameters required to run or deploy
 
-you need a `Secrets.toml` file in the root of the project with:
+you need a `secret.key` file in `bin/frajd-o-matic/` with:
 
-```toml
-DISCORD_TOKEN = 'your_discord_token_here'
+```text
+'your_discord_token_here'
 ```
 
 ## license
