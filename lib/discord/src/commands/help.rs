@@ -20,7 +20,7 @@ pub async fn dice(ctx: super::Context<'_>) -> Result<(), super::Error> {
         "### supported entries",
         "- numbers: any positive integer (e.g. `2`, `10`, `100`)",
         "- addition and subtraction: `+` and `-` to add or subtract numbers or dice results (e.g. `d20 + 2`, `7 - 2d6`)",
-        "- dice, number of dice should be at most 100, number of sides at most 1000:",
+        "- dice: number of dice should be at most 100, number of sides at most 1000:",
         "  - standard dice: `d20`, `2d6`, `4D100` (number of dice and sides)",
         "  - fate dice: `4dF` (four FATE dice, each -1, 0, or +1)",
         "  - omit number before `d` to roll one die (e.g. `d6` = `1d6`)",
