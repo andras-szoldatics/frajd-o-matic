@@ -2,5 +2,4 @@
 /target
 
 # skip files containing secrets
-Secrets*.toml
-.shuttle*
+secret.key

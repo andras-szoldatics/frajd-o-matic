@@ -1,3 +1,5 @@
+use std::cmp::max;
+
 const FORMULA_LINE_LIMIT: u64 = 64 * 12;
 
 pub fn result_message(
@@ -19,7 +21,8 @@ pub fn result_message(
         )
     };
 
-    // calculcate line limit
+    // calculate line limit
+    let repeats = max(1, repeats);
     let limit = FORMULA_LINE_LIMIT / repeats;
 
     // assemble lines as a discord message
