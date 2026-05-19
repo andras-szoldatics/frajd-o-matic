@@ -1,4 +1,4 @@
-use rand::Rng;
+use rand::RngExt;
 
 /// command to flip a two-sided coin
 #[poise::command(slash_command, rename = "flip-coin", category = "core")]

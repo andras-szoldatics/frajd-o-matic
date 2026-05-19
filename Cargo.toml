@@ -1,17 +1,22 @@
 [workspace]
 members = [
     # libraries
-    "lib/dice",
-    "lib/discord",
+    "src/lib/dice",
+    "src/lib/discord",
 
     # binaries
-    "bin/frajd-o-matic",
+    "src/bin/frajd-o-matic",
 ]
 resolver = "3"
 
 [workspace.dependencies]
-dice = { path = "lib/dice" }
-discord = { path = "lib/discord" }
+# repo dependencies
+dice = { path = "src/lib/dice" }
+discord = { path = "src/lib/discord" }
+
+# external dependencies
+poise = "0.6.2"
+rand = "0.10.1"
 
 [workspace.lints.clippy]
 pedantic = { level = "warn", priority = -1 }

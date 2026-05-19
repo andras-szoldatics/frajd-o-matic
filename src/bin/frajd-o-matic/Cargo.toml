@@ -1,0 +1,19 @@
+[package]
+name = "frajd-o-matic"
+version = "0.3.2"
+edition = "2024"
+
+[lints]
+workspace = true
+
+[dependencies]
+# repo dependencies
+dice = { workspace = true }
+discord = { workspace = true }
+
+# external dependencies
+anyhow = "1.0.102"
+poise = { workspace = true }
+tokio = { version = "1.52.3", features = ["full"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }

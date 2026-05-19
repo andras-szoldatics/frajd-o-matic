@@ -1,4 +1,4 @@
-use rand::{Rng, rng};
+use rand::{RngExt, rng};
 
 fn process_dice(dice: &crate::Dice) -> crate::Value {
     let mut value = crate::Value::default();
