@@ -8,7 +8,7 @@ pub fn result_message(
     repeats: u64,
 ) -> (String, String) {
     let result_line = match reason {
-        Some(s) => format!("{s} = **{}**", result.final_value),
+        Some(reason) => format!("{} = **{}**", reason, result.final_value),
         None => format!("= **{}**", result.final_value),
     };
 

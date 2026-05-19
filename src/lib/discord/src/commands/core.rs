@@ -23,6 +23,7 @@ pub async fn flip_coin(
 
     Ok(())
 }
+
 /// command to roll some dice
 #[poise::command(slash_command, rename = "roll-dice", category = "core")]
 pub async fn roll_dice(

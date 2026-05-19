@@ -19,7 +19,7 @@ pub async fn fate_roll(
     // assemble a string formula by hand
     let dice_formula = format!("4dF{modifier:+}");
 
-    // this formula should always be parsed, but just in case
+    // this formula should always be parsable, but just in case
     let r = dice::Formula::try_from(&dice_formula);
     match r {
         Ok(formula) => {

@@ -22,6 +22,8 @@ async fn main() -> anyhow::Result<()> {
                 // lancer commands
                 discord::commands::lancer::lancer_roll(),
                 discord::commands::lancer::lancer_d6(),
+                // helvéczia commands
+                discord::commands::helveczia::stat_block(),
                 // help commands
                 discord::commands::help::commands(),
                 discord::commands::help::dice(),
