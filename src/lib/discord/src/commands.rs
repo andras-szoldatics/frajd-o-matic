@@ -24,7 +24,7 @@ where
 
         // generate block for result line
         let block = match repeats {
-            1 => r.to_string(),
+            1 => r.clone(),
             _ => format!("1. {r}"),
         };
         messages.push(block);

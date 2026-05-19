@@ -150,14 +150,14 @@ impl crate::Formula {
                     };
 
                     // check if previous entry was an operator
-                    if let Some(was_op) = was_operator {
-                        if !was_op {
-                            return Err(crate::FormulaError {
-                                original: self.original,
-                                issue: crate::Issue::InvalidDice,
-                                issue_ix: Some(current_ix),
-                            });
-                        }
+                    if let Some(was_op) = was_operator
+                        && !was_op
+                    {
+                        return Err(crate::FormulaError {
+                            original: self.original,
+                            issue: crate::Issue::InvalidDice,
+                            issue_ix: Some(current_ix),
+                        });
                     }
 
                     // check dice against constraints
@@ -178,14 +178,14 @@ impl crate::Formula {
                 }
                 crate::Category::Number(_) => {
                     // check if previous entry was an operator
-                    if let Some(was_op) = was_operator {
-                        if !was_op {
-                            return Err(crate::FormulaError {
-                                original: self.original,
-                                issue: crate::Issue::InvalidNumber,
-                                issue_ix: Some(current_ix),
-                            });
-                        }
+                    if let Some(was_op) = was_operator
+                        && !was_op
+                    {
+                        return Err(crate::FormulaError {
+                            original: self.original,
+                            issue: crate::Issue::InvalidNumber,
+                            issue_ix: Some(current_ix),
+                        });
                     }
 
                     // shift ix & flag
@@ -197,14 +197,14 @@ impl crate::Formula {
                 }
                 crate::Category::OpPlus | crate::Category::OpMinus => {
                     // check if previous entry was an operator
-                    if let Some(was_op) = was_operator {
-                        if was_op {
-                            return Err(crate::FormulaError {
-                                original: self.original,
-                                issue: crate::Issue::InvalidOperator,
-                                issue_ix: Some(current_ix),
-                            });
-                        }
+                    if let Some(was_op) = was_operator
+                        && was_op
+                    {
+                        return Err(crate::FormulaError {
+                            original: self.original,
+                            issue: crate::Issue::InvalidOperator,
+                            issue_ix: Some(current_ix),
+                        });
                     }
 
                     // shift ix & flag

@@ -3,7 +3,7 @@ use std::cmp::max;
 const FORMULA_LINE_LIMIT: u64 = 64 * 12;
 
 pub fn result_message(
-    result: dice::Result,
+    result: &dice::Result,
     reason: Option<&String>,
     repeats: u64,
 ) -> (String, String) {

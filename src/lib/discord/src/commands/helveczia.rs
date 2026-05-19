@@ -4,7 +4,7 @@ const STATS: [&str; 6] = ["STR", "DEX", "CON", "INT", "WIS", "CHA"];
 #[poise::command(slash_command, rename = "helveczia-stats", category = "helveczia")]
 pub async fn stat_block(ctx: super::Context<'_>) -> Result<(), super::Error> {
     // assemble a string formula by hand
-    let dice_formula = format!("4d6:H3");
+    let dice_formula = String::from("4d6:H3");
 
     // this formula should always be parsable, but just in case
     let r = dice::Formula::try_from(&dice_formula);
@@ -25,13 +25,12 @@ pub async fn stat_block(ctx: super::Context<'_>) -> Result<(), super::Error> {
     // assemble a stat block message
     for stat in STATS {
         let result = formula.generate_result();
-        let reason = Some(&stat.to_string());
-        let (r, f) = crate::message::result_message(result, reason, 1);
+        let reason = Some(stat.to_string());
+        let (r, f) = crate::message::result_message(&result, reason.as_ref(), 1);
 
         // filter for empty lines on return
         if !r.is_empty() {
-            let block = format!("{r}");
-            messages.push(block);
+            messages.push(r);
         }
 
         if !f.is_empty() {

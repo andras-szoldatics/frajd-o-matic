@@ -35,7 +35,7 @@ pub async fn lancer_roll(
             // initialize generator closure
             let generator = || {
                 let result = formula.generate_result();
-                crate::message::result_message(result, reason.as_ref(), repeats)
+                crate::message::result_message(&result, reason.as_ref(), repeats)
             };
 
             // generate repeated results as reply
@@ -74,7 +74,7 @@ pub async fn lancer_d6(
             // initialize generator closure
             let generator = || {
                 let result = formula.generate_result();
-                crate::message::result_message(result, reason.as_ref(), 1)
+                crate::message::result_message(&result, reason.as_ref(), 1)
             };
 
             // generate repeated results as reply

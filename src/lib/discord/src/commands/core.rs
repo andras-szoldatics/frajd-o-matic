@@ -53,7 +53,7 @@ pub async fn roll_dice(
             // initialize generator closure
             let generator = || {
                 let result = formula.generate_result();
-                crate::message::result_message(result, reason.as_ref(), repeats)
+                crate::message::result_message(&result, reason.as_ref(), repeats)
             };
 
             // generate repeated results as reply

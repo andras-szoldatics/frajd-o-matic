@@ -321,7 +321,7 @@ dependencies = [
 
 [[package]]
 name = "dice"
-version = "0.2.4"
+version = "0.2.5"
 dependencies = [
  "nom",
  "rand 0.10.1",
@@ -339,7 +339,7 @@ dependencies = [
 
 [[package]]
 name = "discord"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "dice",
  "poise",
@@ -427,7 +427,7 @@ dependencies = [
 
 [[package]]
 name = "frajd-o-matic"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "anyhow",
  "dice",
