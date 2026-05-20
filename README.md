@@ -35,6 +35,11 @@ This project utilizes the poise [[link](https://docs.rs/poise/latest/poise/)] an
 - `/lancer-d6` — shortcut to roll a single d6 die for chance / recharge
   - `reason` (string, optional, 1-64 chars): short identifier for the reason, e.g. `NPC recharge`
 
+### helveczia commands
+
+- `/helveczia-stats` — command to generate a stat block for Helvéczia RPG
+  - rolls `4d6:H3` once for each stat: `STR`, `DEX`, `CON`, `INT`, `WIS`, `CHA`
+
 ### help commands
 
 - `/help-commands` — shows a list of all available commands and their descriptions, sent as private message
